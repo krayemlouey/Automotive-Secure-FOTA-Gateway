@@ -1,0 +1,9 @@
+popupwrapper set
+
+popupwrapper record_answer "New STM32Cube firmware version available" BUTTON_1
+
+config load STM32H747I-DISCO.ioc
+project generate
+config save
+
+exit

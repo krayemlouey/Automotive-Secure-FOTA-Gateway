@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.26.1">
+  <Languages>
+    <Language Id="GB" />
+  </Languages>
+  <Texts>
+    <TextGroup Id="Group1" />
+    <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_TL2P" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">Louey krayem</Translation>
+      </Text>
+      <Text Id="__SingleUse_2NEF" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">Aucune anomalie. Trafic CAN régulier</Translation>
+      </Text>
+      <Text Id="__SingleUse_1AGO" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_AH9P" Alignment="Center" TypographyId="Small">
+        <Translation Language="GB">DIAGNOSTIC CYBER-SÉCURITÉ :</Translation>
+      </Text>
+      <Text Id="__SingleUse_SQJ0" Alignment="Center" TypographyId="Small">
+        <Translation Language="GB">CAPTURE DU SIGNAL LORS D'ANOMALIE</Translation>
+      </Text>
+      <Text Id="__SingleUse_RW8D" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">ID: &lt;value&gt; | DLC: 8 | FLUX SAIN</Translation>
+      </Text>
+      <Text Id="__SingleUse_4HSN" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">TRAME VALIDÉE PAR TINYML H7</Translation>
+      </Text>
+      <Text Id="__SingleUse_Z1XL" Alignment="Center" TypographyId="Small">
+        <Translation Language="GB">RAME CRÉNEAUX : MODE AI RAFALE </Translation>
+      </Text>
+      <Text Id="__SingleUse_V912" Alignment="Left" TypographyId="Small">
+        <Translation Language="GB">TRAME CRÉNEAUX : MODE POTENTIOMÈTRE (ID 0x100)</Translation>
+      </Text>
+      <Text Id="__SingleUse_LNJQ" Alignment="Center" TypographyId="Small">
+        <Translation Language="GB">SIGNAL ANALOGIQUE (POTENTIOMÈTRE)</Translation>
+      </Text>
+      <Text Id="__SingleUse_TATV" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">ECU CONTRÔLEUR CAN</Translation>
+      </Text>
+      <Text Id="__SingleUse_Z9B9" Alignment="Center" TypographyId="Large">
+        <Translation Language="GB">COMMUNICATION CAN EN TEMPS RÉEL </Translation>
+      </Text>
+    </TextGroup>
+  </Texts>
+  <Typographies>
+    <Typography Id="Default" Font="verdana.ttf" Size="24" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz :.,;!?-+*/()#_%°éèàùêâôîç'|" WildcardCharacterRanges="0x20-0x7E,0xA0-0xFF" />
+    <Typography Id="Large" Font="DUBAI-BOLD.TTF" Size="19" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="verdana.ttf" Size="12" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz :.,;!?-+*/()#_%°éèàùêâôîç'|" WildcardCharacterRanges="0x20-0x7E,0xA0-0xFF" />
+  </Typographies>
+</TextDatabase>

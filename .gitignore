@@ -1,0 +1,48 @@
+# ==========================================
+# Git Ignore - Intelligent Automotive CAN Gateway & TinyML IDS
+# ==========================================
+
+# Compilateurs et fichiers objets
+*.o
+*.d
+*.obj
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.axf
+
+# Repertoires de build STM32CubeIDE / GCC / Keil / IAR
+Debug/
+Release/
+build/
+gcc/build/
+EWARM/settings/
+MDK-ARM/DebugConfig/
+MDK-ARM/JLinkSettings.ini
+*.launch
+
+# Fichiers generes TouchGFX (garder les sources de gui/ et assets/)
+TouchGFXProjects/MyApplication/CM7/TouchGFX/build/
+TouchGFXProjects/MyApplication/CM7/TouchGFX/generated/images/
+TouchGFXProjects/MyApplication/CM7/TouchGFX/generated/fonts/
+TouchGFXProjects/MyApplication/CM7/TouchGFX/generated/texts/
+TouchGFXProjects/MyApplication/CM7/TouchGFX/simulator/msvs/
+TouchGFXProjects/MyApplication/CM4/TouchGFX/build/
+
+# Fichiers temporaires IDE & Systemes
+.metadata/
+.settings/
+*.project.bak
+*.cproject.bak
+*.su
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+~$*
+
+# Archives volumineuses
+can_ids_model_package.zip
+temp_tpa/

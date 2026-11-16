@@ -1,0 +1,402 @@
+{
+  "Application": {
+    "Screens": [
+      {
+        "Name": "Screen1",
+        "CanvasBufferSize": 12000,
+        "Components": [
+          {
+            "Type": "Box",
+            "Name": "box1",
+            "Width": 800,
+            "Height": 480
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textTitleLeft",
+            "X": 15,
+            "Y": 25,
+            "Width": 370,
+            "Height": 30,
+            "TextId": "__SingleUse_Z9B9",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 245,
+              "Green": 245,
+              "Blue": 245
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textTitleRight",
+            "X": 415,
+            "Y": 12,
+            "Width": 370,
+            "Height": 30,
+            "Visible": false,
+            "TextId": "__SingleUse_TATV",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "Box",
+            "Name": "boxBgAnalog",
+            "X": 15,
+            "Y": 50,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lblAnalog",
+            "X": 25,
+            "Y": 55,
+            "Width": 350,
+            "Height": 20,
+            "TextId": "__SingleUse_LNJQ",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "DynamicGraph",
+            "Name": "dynamicGraph1",
+            "X": 25,
+            "Y": 85,
+            "Width": 350,
+            "Height": 90,
+            "DataSeed": -1116741163,
+            "NumberOfValues": 120,
+            "MaxY": 4095.0,
+            "Precision": "1",
+            "LastIndex": 119,
+            "XAxisScale": 1.0,
+            "InsertRandomValues": true,
+            "GraphType": "GraphWrapClear",
+            "GraphDrawers": [
+              {
+                "Type": "LineDrawer",
+                "LineWidth": 2,
+                "FileNameImage": "",
+                "Color": {
+                  "Red": 20,
+                  "Green": 20,
+                  "Blue": 20
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Box",
+            "Name": "boxBgNormal",
+            "X": 15,
+            "Y": 195,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lblNormal",
+            "X": 25,
+            "Y": 200,
+            "Width": 350,
+            "Height": 20,
+            "TextId": "__SingleUse_V912",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "DynamicGraph",
+            "Name": "graphSquareNormal",
+            "X": 35,
+            "Y": 235,
+            "Width": 350,
+            "Height": 90,
+            "DataSeed": -476270695,
+            "NumberOfValues": 100,
+            "MaxY": 1.0,
+            "Precision": "1",
+            "LastIndex": 99,
+            "XAxisScale": 1.0,
+            "InsertRandomValues": true,
+            "GraphType": "GraphWrapClear",
+            "GraphDrawers": [
+              {
+                "Type": "LineDrawer",
+                "LineWidth": 2,
+                "FileNameImage": "",
+                "Color": {
+                  "Red": 77,
+                  "Green": 227,
+                  "Blue": 18
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Box",
+            "Name": "boxBgBurst",
+            "X": 15,
+            "Y": 340,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lblBurst",
+            "X": 25,
+            "Y": 345,
+            "Width": 350,
+            "Height": 20,
+            "TextId": "__SingleUse_Z1XL",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "DynamicGraph",
+            "Name": "graphSquareBurst",
+            "X": 25,
+            "Y": 370,
+            "Width": 350,
+            "Height": 90,
+            "DataSeed": 1790110051,
+            "NumberOfValues": 100,
+            "MaxY": 1.0,
+            "Precision": "1",
+            "LastIndex": 99,
+            "XAxisScale": 1.0,
+            "InsertRandomValues": true,
+            "GraphType": "GraphWrapClear",
+            "GraphDrawers": [
+              {
+                "Type": "LineDrawer",
+                "LineWidth": 2,
+                "FileNameImage": "",
+                "Color": {
+                  "Red": 240,
+                  "Green": 17,
+                  "Blue": 32
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Box",
+            "Name": "boxStatusGreen",
+            "X": 415,
+            "Y": 50,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 33,
+              "Green": 69,
+              "Blue": 7
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textTinyMLStatus",
+            "Width": 195,
+            "Height": 15,
+            "TextId": "__SingleUse_4HSN",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 76,
+              "Green": 194,
+              "Blue": 25
+            },
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textFrameDetails",
+            "X": 425,
+            "Y": 95,
+            "Width": 350,
+            "Height": 70,
+            "TextId": "__SingleUse_RW8D",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "UseBuffer": true,
+              "BufferSize": 32
+            }
+          },
+          {
+            "Type": "Box",
+            "Name": "boxErrorCapture",
+            "X": 415,
+            "Y": 195,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "lblErrorCapture",
+            "X": 425,
+            "Y": 200,
+            "Width": 350,
+            "Height": 20,
+            "TextId": "__SingleUse_SQJ0",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "DynamicGraph",
+            "Name": "dynamicGraph2",
+            "X": 425,
+            "Y": 225,
+            "Width": 350,
+            "Height": 90,
+            "DataSeed": -339246735,
+            "NumberOfValues": 100,
+            "MaxY": 1.0,
+            "Precision": "1",
+            "LastIndex": 99,
+            "XAxisScale": 1.0,
+            "InsertRandomValues": true,
+            "GraphType": "GraphWrapClear",
+            "GraphDrawers": [
+              {
+                "Type": "LineDrawer",
+                "LineWidth": 2,
+                "FileNameImage": "",
+                "Color": {
+                  "Red": 5,
+                  "Green": 5,
+                  "Blue": 5
+                }
+              }
+            ]
+          },
+          {
+            "Type": "Box",
+            "Name": "boxErrorMessage",
+            "X": 415,
+            "Y": 340,
+            "Width": 370,
+            "Height": 130,
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textErrorTitle",
+            "X": 425,
+            "Y": 345,
+            "Width": 350,
+            "Height": 25,
+            "TextId": "__SingleUse_AH9P",
+            "TextRotation": "0"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textErrorDescription",
+            "X": 425,
+            "Y": 375,
+            "Width": 350,
+            "Height": 85,
+            "TextId": "__SingleUse_1AGO",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "TextId": "__SingleUse_2NEF",
+              "UseBuffer": true,
+              "BufferSize": 64
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea1",
+            "X": 489,
+            "Y": 15,
+            "Width": 111,
+            "Height": 23,
+            "TextId": "__SingleUse_TL2P",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 224,
+              "Green": 29,
+              "Blue": 29
+            },
+            "AutoSize": true
+          }
+        ],
+        "Interactions": []
+      }
+    ],
+    "CustomContainerDefinitions": [],
+    "Name": "STM32H747I-DISCO",
+    "Resolution": {
+      "Width": 800,
+      "Height": 480
+    },
+    "SelectedColorDepth": 24,
+    "StartupScreenName": "Screen1",
+    "SelectedStartupLanguage": "GB",
+    "TouchGfxPath": "../Middlewares/ST/touchgfx",
+    "UIPath": ".",
+    "AvailableColorDepths": [
+      24
+    ],
+    "AvailableLCDs": {
+      "16": "LCD16bpp",
+      "24": "LCD24bpp"
+    },
+    "AvailableSections": [
+      "ExtFlashSection",
+      "IntFlashSection"
+    ],
+    "AvailableResolutions": [
+      {
+        "Width": 800,
+        "Height": 480
+      }
+    ],
+    "PhysicalButtons": [],
+    "FrameworkFeatures": {
+      "LCD24bpp": {
+        "Id": "LCD24bpp",
+        "IsEnabled": true
+      }
+    },
+    "GenerateAssetsCommand": "make -f simulator/gcc/Makefile assets -j8",
+    "PostGenerateCommand": "touchgfx update_project --project-file=simulator/msvs/Application.vcxproj",
+    "PostGenerateTargetCommand": "touchgfx update_project",
+    "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
+    "RunSimulatorCommand": "build\\bin\\simulator.exe",
+    "CompileTargetCommandOverride": "make -f ../../gcc/Makefile -j8",
+    "FlashTargetCommandOverride": "make -f ../../gcc/Makefile flash",
+    "FlashTargetIntCommandOverride": "make -f ../../gcc/Makefile intflash",
+    "LandscapeSkinX": 0,
+    "LandscapeSkinY": 0,
+    "PortraitSkinX": 0,
+    "PortraitSkinY": 0,
+    "DisplayOrientation": "Landscape",
+    "Family": "STM32H7",
+    "SubFamily": "STM32H747/757",
+    "Toolchain": "STM32CubeIDE",
+    "Platform": "m7",
+    "ProjectFile": "../../STM32H747I-DISCO.ioc",
+    "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
+    "OptionalComponents": [],
+    "AdditionalFeatures": []
+  },
+  "Version": "4.26.1",
+  "CreatedBy": "4.26.1"
+}
