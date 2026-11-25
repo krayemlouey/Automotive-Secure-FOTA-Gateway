@@ -1,4 +1,4 @@
-#include <gui/model/Model.hpp>
+﻿#include <gui/model/Model.hpp>
 #include <gui/model/ModelListener.hpp>
 #include <cstdint>
 
@@ -22,7 +22,7 @@ void Model::tick()
         volatile uint32_t delta_t;
     } CAN_Shared_t;
 
-    /* Invalidate D-cache line so CM7 reads fresh SRAM4 directly from physical RAM */
+    /* Invalidate D-cache so CM7 reads fresh SRAM4 directly from physical RAM */
     SCB_InvalidateDCache_by_Addr((uint32_t*)0x38000000, 64);
     __DMB();
 
@@ -31,6 +31,7 @@ void Model::tick()
     if (modelListener != 0)
     {
         *((volatile uint32_t*)0x38000220) += 1;
-        modelListener->updatePotData(shared->pot_raw, shared->frame_count, shared->status);
+        /* Appel 60 Hz fluide sans blocage ni latence */
+        modelListener->updatePotData(shared->pot_raw, shared->frame_count, shared->can_id);
     }
 }

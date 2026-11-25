@@ -147,6 +147,8 @@ int main(void)
   /* Small delay to let CAN transceiver signals on PB8/PB9 stabilize
      before QSPI/FMC/DSI initialization (prevents black screen at reset) */
   HAL_Delay(200);
+  /* OTA PERSISTENCE: Activer l'accès au domaine Backup AVANT TouchGFX */
+  HAL_PWR_EnableBkUpAccess();
   /* USER CODE END Init */
 
   /* Configure the system clock */

@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+﻿/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -115,6 +115,7 @@ int main(void)
     volatile uint32_t dlc;           /* Longueur reçue */
     volatile uint8_t  payload[8];    /* Données reçues en direct */
     volatile uint32_t delta_t;       /* Intervalle de temps en ms */
+    volatile uint32_t ota_cmd;       /* Commande OTA persistante (0x170, 0x180, 0x190) */
   } CAN_Shared_t;
   CAN_Shared_t *shared = (CAN_Shared_t *)0x38000000;
   shared->status = 0;
@@ -122,6 +123,7 @@ int main(void)
   shared->pot_raw = 0;
   shared->can_id = 0x100;
   shared->delta_t = 50;
+  shared->ota_cmd = 0;
 
   FDCAN_RxHeaderTypeDef rx_header;
   uint8_t rx_data[8];
@@ -136,7 +138,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if (HAL_FDCAN_GetRxFifoFillLevel(&hfdcan1, FDCAN_RX_FIFO0) > 0)
+    /* 1. Traitement instantane de toutes les trames CAN en attente dans la FIFO */
+    while (HAL_FDCAN_GetRxFifoFillLevel(&hfdcan1, FDCAN_RX_FIFO0) > 0)
     {
       if (HAL_FDCAN_GetRxMessage(&hfdcan1, FDCAN_RX_FIFO0, &rx_header, rx_data) == HAL_OK)
       {
@@ -148,22 +151,16 @@ int main(void)
         uint32_t id = rx_header.Identifier;
         uint16_t pot = (uint16_t)rx_data[0] | ((uint16_t)rx_data[1] << 8);
 
-        /* ========================================================
-         * INFERENCE DU MODÈLE TINYML EN TEMPS RÉEL (CORTEX-M4)
-         * Réseau de neurones multi-couches (Architecture Cube.AI)
-         * ======================================================== */
+        /* Inférence TinyML temps réel (Cortex-M4) */
         float in_dt  = (float)dt;
         float in_id  = (float)id;
-        /* DataLength field: upper 16 bits = DLC code. Convert to byte count. */
         uint32_t dlc_raw = (rx_header.DataLength >> 16) & 0xF;
         float in_dlc = (float)dlc_raw;
         float in_pot = (float)pot;
         float in_tag = (float)rx_data[6];
-
-        /* Inférence neurale directe ultra-rapide (<15 µs @ 240 MHz) */
         uint32_t attack_detected = (uint32_t)tinyml_predict_can_ids(in_dt, in_id, in_dlc, in_pot, in_tag);
 
-        /* Enregistrement dans la mémoire partagée SRAM4 pour TouchGFX */
+        /* Mise à jour immédiate SRAM4 partagée */
         shared->can_id = id;
         shared->dlc = dlc_raw;
         for (int i = 0; i < 8; i++) {
@@ -172,7 +169,15 @@ int main(void)
         shared->delta_t = dt;
         shared->status = attack_detected;
 
-        if (attack_detected == 0) {
+        /* Mémoriser les commandes OTA/Contrôle jusqu'à lecture/acquittement par CM7 */
+        if (id == 0x170 || id == 0x180 || id == 0x190)
+        {
+          shared->ota_cmd = id;
+        }
+
+        /* Vitesse toujours mise a jour sur ID 0x100 pour une reactivite maximale sans latence */
+        if (id == 0x100)
+        {
           shared->pot_raw = pot;
         }
 
@@ -180,31 +185,17 @@ int main(void)
         shared->last_tick = now;
       }
     }
-    else
-    {
-      /* ============================================================
-       * MODE DÉMO : aucune trame reçue depuis 500 ms
-       * Génère un signal triangulaire 0→4095→0 toutes les ~4 s
-       * pour valider l'affichage CM7 sans la Nucleo branchée.
-       * ============================================================ */
-      uint32_t now = HAL_GetTick();
-      if ((now - last_can_rx) > 500U)
-      {
-        /* Mise à jour toutes les 20 ms → 200 pas → 4 secondes */
-        if ((now - demo_tick) >= 20U)
-        {
-          demo_tick = now;
-          demo_pot = (uint32_t)((int32_t)demo_pot + demo_dir * 20);
-          if ((int32_t)demo_pot >= 4095) { demo_pot = 4095; demo_dir = -1; }
-          if ((int32_t)demo_pot <= 0)    { demo_pot = 0;    demo_dir =  1; }
 
-          shared->pot_raw     = demo_pot;
-          shared->status      = 0;         /* Normal — fond vert */
-          shared->can_id      = 0x100;
-          shared->delta_t     = 50;
-          shared->frame_count = (shared->frame_count + 1) & 0xFFFFFFFF;
-          shared->last_tick   = now;
-        }
+    /* 2. Récupération Bus-Off non-bloquante automatique */
+    static uint32_t last_busoff_recovery = 0;
+    if (hfdcan1.Instance->PSR & FDCAN_PSR_BO)
+    {
+      uint32_t now_bo = HAL_GetTick();
+      if ((now_bo - last_busoff_recovery) > 100)
+      {
+        last_busoff_recovery = now_bo;
+        HAL_FDCAN_Stop(&hfdcan1);
+        HAL_FDCAN_Start(&hfdcan1);
       }
     }
     /* USER CODE END WHILE */
