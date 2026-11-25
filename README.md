@@ -1,176 +1,165 @@
-# 🛡️ Dual-Core Automotive Security Gateway & Real-Time TinyML CAN-IDS
-### *Intelligent Intrusion Detection & Multi-Network Gateway for Connected Vehicles*
+# 🚗 Secure Automotive FOTA Gateway & Dual-Core Digital Cockpit
+### *Compliant with UN R156 (Software Update Management Systems) & ISO/SAE 21434 (Automotive Cybersecurity)*
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform: STM32H747](https://img.shields.io/badge/Platform-STM32H747I--DISCO-brightgreen.svg)](https://www.st.com/en/evaluation-tools/stm32h747i-disco.html)
-[![Co-Processor: STM32F446](https://img.shields.io/badge/Bench-NUCLEO--F446RE-blue.svg)](https://www.st.com/en/evaluation-tools/nucleo-f446re.html)
-[![AI Framework: STM32Cube.AI](https://img.shields.io/badge/AI-STM32Cube.AI%20%7C%20ONNX-orange.svg)](https://www.st.com/en/embedded-software/x-cube-ai.html)
-[![GUI: TouchGFX](https://img.shields.io/badge/GUI-TouchGFX%20800x480-purple.svg)](https://support.touchgfx.com/)
+[![Platform: STM32H747](https://img.shields.io/badge/Target-STM32H747I--DISCO%20(Dual--Core)-brightgreen.svg)](https://www.st.com/en/evaluation-tools/stm32h747i-disco.html)
+[![Gateway: ESP32](https://img.shields.io/badge/Telematics-ESP32%20DevKit%20V1-red.svg)](https://www.espressif.com/)
+[![Co-Processor: STM32F446](https://img.shields.io/badge/ECU%20Bench-NUCLEO--F446RE-blue.svg)](https://www.st.com/en/evaluation-tools/nucleo-f446re.html)
+[![GUI: TouchGFX](https://img.shields.io/badge/GUI-TouchGFX%2060FPS-purple.svg)](https://support.touchgfx.com/)
+[![Standard: UN R156](https://img.shields.io/badge/Standard-UN%20R156%20%7C%20ISO%2021434-orange.svg)](https://unece.org/)
 
 ---
 
-## 📌 Executive Summary
+## 📌 Project Overview
 
-Modern connected and autonomous vehicles integrate dozens of Electronic Control Units (ECUs) exchanging critical telemetry over Controller Area Networks (CAN / CAN-FD). However, the classical CAN protocol lacks native encryption, authentication, and origin verification, exposing vehicle architectures to malicious frame injection, Denial-of-Service (DoS), spoofing, and fuzzing attacks.
+In the era of the **Software-Defined Vehicle (SDV)**, deploying **Firmware Over-The-Air (FOTA)** updates is critical to eliminate costly physical workshop recalls and deliver instant functional improvements. 
 
-This project implements an **Intelligent Dual-Core Embedded Automotive Security Gateway & Intrusion Detection System (IDS)**. Rather than relying on cloud connectivity or heavy computational servers, the entire detection and mitigation pipeline is deployed **directly on-chip at the hardware edge** using the asymmetric **STM32H747 dual-core microcontroller** and **TinyML**.
+However, deploying code remotely to an active vehicle involves strict safety and regulatory challenges:
+1. **UN R156 (SUMS)**: Mandatory driver consent prior to installation, payload integrity verification, and zero disruption to active driving telemetry.
+2. **UN R155 & ISO/SAE 21434**: End-to-end cybersecurity protection, out-of-band separation between untrusted wireless entrypoints and in-vehicle critical buses.
+
+This repository hosts a production-grade **Hardware-in-the-Loop (HIL) Automotive FOTA Pipeline** connecting a Telematics Gateway, an ECU Simulator, and a Dual-Core High-Performance Instrument Cluster.
 
 ```
-                           VEHICLE CAN BUS INFRASTRUCTURE
-                                         │
-                 ┌───────────────────────┼───────────────────────┐
-                 │                       │                       │
-           [CAN Network 1]         [CAN Network 2]         [CAN Network 3]
-           Chassis / Body           Powertrain              Infotainment
-                 │                       │                       │
-                 └───────────────────────┼───────────────────────┘
-                                         ▼
-                     ┌───────────────────────────────────────┐
-                     │   STM32H747I-DISCO SECURITY GATEWAY   │
-                     │                                       │
-                     │  ┌─────────────────────────────────┐  │
-                     │  │ Cortex-M4 Core (240 MHz)        │  │
-                     │  │ • Real-Time CAN Frame Sniffer   │  │
-                     │  │ • Feature Extraction Engine     │  │
-                     │  │ • TinyML IDS Classifier (ONNX)  │  │
-                     │  │ • Mitigation / Filtering Engine │  │
-                     │  └────────────────┬────────────────┘  │
-                     │                   │ IPC (SRAM4 + HSEM)│
-                     │  ┌────────────────▼────────────────┐  │
-                     │  │ Cortex-M7 Core (480 MHz)        │  │
-                     │  │ • TouchGFX 800x480 Dashboard    │  │
-                     │  │ • Diagnostics & Threat Alarms   │  │
-                     │  │ • Gateway Supervisory Control   │  │
-                     │  └─────────────────────────────────┘  │
-                     └───────────────────────────────────────┘
-                                         ▲
-                                         │ Monitored Link
-                     ┌───────────────────┴───────────────────┐
-                     │ NUCLEO-F446RE BENCHMARK & ATTACK NODE │
-                     │  • Manual Mode: Potentiometer Fuzzing │
-                     │  • AI Mode: Synthetic Attack Bursts   │
-                     └───────────────────────────────────────┘
+       [ MOBILE PHONE / TECHNICIAN ]
+                     │ (Wi-Fi 802.11 / Web Portal)
+                     ▼
+  ┌─────────────────────────────────────┐
+  │ 1. TELEMATICS GATEWAY (ESP32)       │
+  │    • Embedded Web Server            │
+  │    • Streaming CRC32 Engine         │
+  │    • Out-of-Band CAN Signaling      │
+  └──────────────────┬──────────────────┘
+                     │ (UART 115200 bauds)
+                     ▼
+  ┌─────────────────────────────────────┐
+  │ 2. VEHICLE GATEWAY (STM32F446RE)    │
+  │    • Sensor Telemetry (ADC Speed)   │
+  │    • Deterministic Command Routing  │
+  └──────────────────┬──────────────────┘
+                     │ (High-Speed CAN 500 kbps)
+                     ▼
+  ┌────────────────────────────────────────────────────────┐
+  │ 3. TARGET DIGITAL COCKPIT (STM32H747I-DISCO)           │
+  │    ├─ Cortex-M4 (240 MHz): Real-Time FDCAN1 & SRAM4    │
+  │    └─ Cortex-M7 (480 MHz): TouchGFX 60 FPS Cluster     │
+  │       • Driver Consent Modal ("MISE À JOUR DEMANDÉE")  │
+  │       • Live Activation: v1.0.0 Eco ↔ v2.0.0 Sport     │
+  │       • Non-Volatile RTC Backup Retention              │
+  └────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🌟 Key Highlights & Innovations
+## ⚙️ Architecture & Hardware Roles
 
-1. **Dual-Core Asymmetric Isolation (AMP)**:
-   - **Arm Cortex-M4 (240 MHz)** dedicated exclusively to hard real-time CAN reception (FDCAN), frame decoding, and TinyML inference (< 2 ms latency).
-   - **Arm Cortex-M7 (480 MHz)** dedicated to supervision, supervisory state machine, and a rich **TouchGFX 800×480 GUI** with Chrom-ART DMA2D acceleration.
-   - Guaranteed **Zero-Jitter**: Graphic rendering cannot stall or delay critical automotive safety packets.
-
-2. **Edge TinyML Intrusion Detection System**:
-   - Neural network trained on multi-attack automotive datasets (`dataset_can_ids.csv`).
-   - Exported to ONNX and compiled into optimized C code (`can_ids_model.c` / `can_ids_model.h`) via **STM32Cube.AI**.
-   - Quantized footprint: executes in **< 15 KB RAM** and **< 45 KB Flash**.
-
-3. **Dual-Mode Benchmark & Stress Node (NUCLEO-F446RE)**:
-   - **Manual Mode**: Physical potentiometer to vary bus load, message injection frequency, and trigger corner-case conditions.
-   - **AI Stochastic Mode**: Autonomous attack burst generator mimicking real-world automotive threats:
-     - *Stuff Error & CRC Injections*
-     - *Denial-of-Service (DoS) high-priority floods*
-     - *Targeted ECU ID Spoofing & Fuzzing*
-     - *Bus-Off confinement triggering*
-
-4. **Zero-Copy Inter-Core Communication (IPC)**:
-   - Shared **SRAM4 memory mapped at `0x38000000`** in Domain D3.
-   - Hardware Semaphores (**HSEM**) for conflict-free atomic state handoff.
-   - MPU configured as *Non-Cacheable, Shareable* to prevent cache coherency hazards.
+| Node | Microcontroller | Operating Role in the FOTA Pipeline |
+|---|---|---|
+| **Telematics Gateway (TCU)** | ESP32 DevKit V1 (240 MHz) | Hosts the secure Wi-Fi access point (`louey_ota`), receives the target binary (`update.bin` or `normal.bin`), calculates continuous **CRC32** on incoming data blocks, and transmits CAN control frames. |
+| **Vehicle Gateway / Simulator** | STM32 Nucleo-F446RE (180 MHz) | Emulates live vehicle dynamics (potentiometer PA0 ADC for real-time speed, fuel, temperature) and bridges telematics commands to the CAN bus. |
+| **Instrument Cluster ECU** | STM32H747I-DISCO (Dual-Core) | **Cortex-M4:** Real-time FDCAN reception into non-cacheable shared SRAM4 (`0x38000000`).<br/>**Cortex-M7:** TouchGFX GUI at 60 FPS, driver confirmation prompt, and live cluster morphing. |
 
 ---
 
-## 📂 Repository Structure
+## 📦 What is Being Updated ("The X")
+
+The payload deployed over-the-air is a **monolithic binary image (~234 KB)** targeting the Cortex-M7 application bank:
+* **ARM Vector Table & Reset Handlers**: Hardware exception routines and FreeRTOS task scheduler.
+* **TouchGFX Rendering Engine**: Graphic dial shaders, anti-aliased needle interpolation, and font typography tables.
+* **Dynamic Vehicle Calibration Maps**:
+  * **v1.0.0 Standard Profile**: 200 km/h maximum scale, Cyan eco palette, Drive (D) mode.
+  * **v2.0.0 Sport Profile**: 260 km/h extended scale, Racing Red palette, Sport (S) mode, and instant power metrics.
+* **Integrity Validation**: Streaming CRC32 cross-checked against CAN ID `0x183` payload.
+
+---
+
+## 🛡️ UN R156 Driver Consent Workflow
+
+To guarantee zero accidental reboots while operating the vehicle:
 
 ```
-├── LOUEY/
-│   └── F446RE_CAN_TX/                 # NUCLEO-F446RE Firmware
-│       ├── Core/Src/
-│       │   ├── main.c                 # Attack Generator State Machine & Potentiometer ADC
-│       │   ├── tft_shield.c           # Local diagnostic status display driver
-│       │   └── ...
-│       └── Drivers/                   # STM32F4xx HAL & CMSIS Drivers
-│
-├── TinyML_CAN_IDS/                    # Machine Learning Pipeline
-│   ├── train_and_export_cube_ai.py    # Training script & ONNX export
-│   ├── dataset_can_ids.csv            # Labeled CAN traffic & anomaly dataset
-│   ├── can_ids_model.onnx             # Exported ONNX neural network
-│   ├── can_ids_model.c / .h           # Generated STM32Cube.AI inference code
-│   ├── patch_cm4.py                   # Automated CM4 integration script
-│   └── STM32CubeAI_Dashboard.html     # Interactive browser report & validation plots
-│
-├── TouchGFXProjects/
-│   └── MyApplication/                 # STM32H747I-DISCO Dual-Core Project
-│       ├── CM4/                       # Cortex-M4 Firmware (FDCAN + TinyML Engine)
-│       ├── CM7/                       # Cortex-M7 Firmware (TouchGFX GUI & Supervisor)
-│       │   └── TouchGFX/              # TouchGFX 800x480 UI Designs & Assets
-│       ├── Common/                    # Shared data structures & memory definitions
-│       ├── Drivers/                   # STM32H7xx HAL, BSP & CMSIS Drivers
-│       └── Middlewares/               # TouchGFX Library & ST AI Runtimes
-│
-├── but .txt                           # Project Mission & Architecture Notes
-├── .gitignore                         # Build artifact filter for clean commits
-└── README.md                          # Project Documentation
+[ New Binary Uploaded ]
+          │
+          ▼
+[ CAN ID 0x180 / 0x190 ]
+          │
+          ▼
+[ Cluster shows non-intrusive alert: "MISE À JOUR DEMANDÉE" ]
+          │
+          ├────────────────────────┐
+          ▼                        ▼
+    [ Touch Banner ]         [ Ignore / Drive ]
+          │                        │
+          ▼                        ▼
+ [ Modal Dialog Opens ]     (No interruption,
+   • [ METTRE À JOUR ]       gauges continue 60 FPS)
+   • [ PLUS TARD ]
+          │
+          ├────────────────────────┐
+          ▼                        ▼
+   [ PLUS TARD ]            [ METTRE À JOUR ]
+          │                        │
+          ▼                        ▼
+(Dismisses modal,           (Animated install bar,
+keeps current mode)          hot-morphs to Sport v2.0.0,
+                             saves flag to RTC Backup Domain)
 ```
 
 ---
 
-## 🔬 TinyML Model Architecture & Performance
+## 📡 CAN Bus Protocol Matrix (500 kbps)
 
-The embedded classifier analyzes temporal and behavioral sliding-window metrics calculated over CAN frame streams:
-
-| Parameter | Specification |
-|---|---|
-| **Input Features** | Message Frequency, Inter-Arrival Delta ($\Delta t$), Payload Entropy, ID Variance, Error Counters |
-| **Model Type** | Quantized Multi-Layer Perceptron (MLP) / 1D-CNN |
-| **Target Classes** | `NORMAL_TRAFFIC`, `DOS_ATTACK`, `SPOOFING`, `FUZZING`, `INTEGRITY_VIOLATION` |
-| **Inference Time** | **~1.15 ms** on Cortex-M4 @ 240 MHz |
-| **Quantization** | INT8 post-training quantization |
-| **Classification Accuracy** | **> 98.4%** across test splits |
-
----
-
-## 🛠️ Hardware Setup & Wiring
-
-| Interface | STM32H747I-DISCO | NUCLEO-F446RE | Notes |
+| CAN ID | Direction | Frequency | Payload Description |
 |---|---|---|---|
-| **CAN Bus (High/Low)** | FDCAN1 (via SN65HVD230) | CAN1 (via Transceiver) | 120 $\Omega$ termination at both ends |
-| **Ground Reference** | GND | GND | Common reference plane |
-| **Potentiometer Input** | — | Pin PA0 (ADC1_IN0) | 0.0V to 3.3V injection tuner |
-| **Diagnostic Display** | Built-in 800×480 DSI/RGB | ST7735 / SPI TFT Shield | Real-time dual display |
+| **`0x100`** | Nucleo $\rightarrow$ H7 | 20 ms | Real-time vehicle speed (ADC 0..4095 mapped to 0..260 km/h). |
+| **`0x101`** | Nucleo $\rightarrow$ H7 | 100 ms | Vehicle environment: Fuel (75%), Temperature (23°C), Humidity (42%). |
+| **`0x102`** | Nucleo $\rightarrow$ H7 | 100 ms | ADAS Obstacle Distance (200 cm). |
+| **`0x170`** | ESP32 $\rightarrow$ H7 | Event | High-priority Vehicle Alert (red banner, no update triggered). |
+| **`0x180`** | ESP32 $\rightarrow$ H7 | Event | **OTA Update Announcement (v2.0.0 Sport)** $\rightarrow$ Triggers driver prompt. |
+| **`0x181`** | ESP32 $\rightarrow$ H7 | Event | OTA Session Start Command. |
+| **`0x183`** | ESP32 $\rightarrow$ H7 | Event | **Integrity Signature**: Bytes 0..3: CRC32 \| Bytes 4..7: Exact file size. |
+| **`0x190`** | ESP32 $\rightarrow$ H7 | Event | **OTA Reset / Normal Announcement (v1.0.0 Eco)** $\rightarrow$ Triggers driver prompt. |
 
 ---
 
-## 🚀 How to Build & Run
+## 💾 State & Data Conservation Across Resets
 
-### 1. Compile & Flash NUCLEO-F446RE (Fault Injector)
-```bash
-cd LOUEY/F446RE_CAN_TX
-# Open in STM32CubeIDE and flash onto NUCLEO-F446RE
-```
+Vehicle mileage (odometer) and current firmware mode must never be lost during power cycles or vehicle sleep states:
+* **Hardware RTC Backup Domain (`0x58004050` - `RTC_BKP0R`)**: Powered by the backup power rail (`VBAT`).
+* When v2.0.0 is confirmed, the magic value `0x55AA2000` is written to `RTC_BKP0R` and `SRAM4_FLAG` (`0x38000400`).
+* Even upon pressing the physical **RESET** button, the cluster reads the backup register and instantly restores the Sport profile without requiring reflashing.
 
-### 2. Train / Retrain the TinyML Model
-```bash
-cd TinyML_CAN_IDS
-python -m pip install -r requirements.txt # numpy, pandas, scikit-learn, onnx
-python train_and_export_cube_ai.py
-```
+---
 
-### 3. Build & Flash STM32H747I-DISCO (Security Gateway)
-1. Open `TouchGFXProjects/MyApplication/STM32CubeIDE` in **STM32CubeIDE**.
-2. Build **Cortex-M4 project** (`CM4`) and flash into Bank 2 (`0x08100000`).
-3. Build **Cortex-M7 project** (`CM7`) and flash into Bank 1 (`0x08000000`).
-4. Program QSPI external Flash for TouchGFX graphic assets at `0x90000000`.
+## 📑 Technical Documentation
+
+A comprehensive, industry-grade technical dossier (in French) is available directly in this repository:
+* 📄 **Download Dossier :** [DOCUMENTATION_TECHNIQUE_AUTOMOTIVE_SECURE_OTA.pdf](DOCUMENTATION_TECHNIQUE_AUTOMOTIVE_SECURE_OTA.pdf)
+
+---
+
+## 🚀 How to Run the Demo
+
+1. **Hardware Setup**:
+   * Connect ESP32 (SN65HVD230), Nucleo-F446RE, and STM32H747I-DISCO (CN2 PMOD PA11/PA12) to the common 500 kbps CAN bus with $120\,\Omega$ termination.
+   * Connect ESP32 GPIO 17 (TX2) to Nucleo Pin D2 (PA10 RX1).
+2. **Access Telematics Portal**:
+   * Connect your smartphone/PC to Wi-Fi **`louey_ota`** (Password: `123456789`).
+   * Navigate to `http://192.168.4.1`.
+3. **Trigger Update**:
+   * Choose `update.bin` (located on Desktop) and click **"Envoyer Mise a Jour (.bin)"**.
+   * On the STM32H7 cluster, tap the top banner **"MISE À JOUR DEMANDÉE"**.
+   * Tap **[METTRE À JOUR]** $\rightarrow$ Observe cluster transformation into the 260 km/h Sport Racing theme.
+4. **Restore**:
+   * Upload `normal.bin` to return to the v1.0.0 Eco profile.
 
 ---
 
 ## 👨‍💻 Author
 
 **Louey KRAYEM**  
-*Embedded Systems & Edge-AI Engineer*  
+*Embedded Systems & Automotive Software Engineer*  
 - GitHub: [@krayemlouey](https://github.com/krayemlouey)  
-- Contact: `loueykrayem@gmail.com`
+- LinkedIn: [Louey Krayem](https://linkedin.com)
 
 ---
 
