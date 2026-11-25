@@ -46,3 +46,9 @@ Desktop.ini
 # Archives volumineuses
 can_ids_model_package.zip
 temp_tpa/
+
+# Non-OTA projects / drafts
+TinyML_CAN_IDS/
+but .txt
+but.docx
+
